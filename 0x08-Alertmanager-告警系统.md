@@ -169,7 +169,8 @@ route:
 
 使用 `kubectl create` 命令创建 secret
 ```shell
-$ kubectl create secret generic alertmanager-example --from-file=alertmanager.yaml
+# 注意命名规则，一定要与前面部署的 alertmanager 实例相对应，比如这里是 alertmanager-dev
+$ kubectl create secret generic alertmanager-dev --from-file=alertmanager.yaml
 ```
 
 #### 8.3.4 部署 kube-state-metrics
