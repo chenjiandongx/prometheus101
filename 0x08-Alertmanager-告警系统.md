@@ -158,6 +158,7 @@ receivers:
     text: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
 route:
  receiver: slack_general
+ # 这里就没有设置太复杂的 route tree 了，关于这部分的详细信息可参考官方文档。
  routes:
   - match:
       severity: warn
@@ -246,6 +247,30 @@ spec:
         summary: 'bbox 服务出现问题啦！'
 
 # k apply -f bbox-rules.yaml
+```
+
+解释一下 cpu-usage 和 memory-usage 表达式分别是什么意思
+
+cpu-usage
+```shell
+# cpu 本身是没有使用率这个概念的，使用率是通过一个进程占用的 cpu 时间计算出来的，可以参考下面 Stackoverflow 的回答。
+# https://stackoverflow.com/questions/40327062/how-to-calculate-containers-cpu-usage-in-kubernetes-with-prometheus-as-monitori
+# 这样计算出来其实是一个 cpu 核心数的「绝对值」。通过 cadvisor 采集得到。
+sum(rate(container_cpu_usage_seconds_total{container_label_io_kubernetes_pod_name=~"bbox-.*"}[1m])) by (pod_name) 
+/
+# 这里再统计该 pod 所有实例 limit 的 cpu 核心数，两者的比率就是以 deployment 为单位的 cpu 使用率。
+# 通过 kube-state-metrics 采集得到。
+sum(kube_pod_container_resource_limits_cpu_cores{exported_pod=~"bbox.*"}) > 0.8
+```
+
+memory-usage
+```shell
+# 统计 bbox deployment 所有 pod 的使用内存，单位为字节。通过 cadvisor 采集得到。
+sum(container_memory_usage_bytes{container_label_io_kubernetes_pod_name=~"bbox-.*"})
+/
+# 统计 bbox deployment 所有 pod 的 limit 内存总量，单位同样为字节。通过 kube-state-metrics 采集得到。
+# 两者的比率就是以 deployment 为单位的内存使用率
+sum(kube_pod_container_resource_requests_memory_bytes{exported_pod=~"bbox.*"}) > 0.8
 ```
 
 ### 8.4 实战 Alertmanager
