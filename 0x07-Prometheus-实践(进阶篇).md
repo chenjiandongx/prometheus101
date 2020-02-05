@@ -10,7 +10,7 @@
 
 接下来就是我们大显身手的时候了，刚才上面一开始我们监控了 prometheus 自己，这回有了 Grafana，就可以用更加「专业（高逼格！）」的图表来可视化数据了。
 
-> 配置 JSON 文件：[grafana-prometheus.json](./exmaple/grafana-prometheus.json)
+> 配置 JSON 文件：[grafana-prometheus.json](./example/grafana-prometheus.json)
 
 ![grafana-prometheus](./images/grafana-prometheus.png)
 
@@ -56,7 +56,7 @@ spec:
 # k apply -f ingress-pod-monitor.yaml
 ```
 
-> 配置 JSON 文件：[grafana-ingress.json](./exmaple/grafana-ingress.json)
+> 配置 JSON 文件：[grafana-ingress.json](./example/grafana-ingress.json)
 
 ![grafana-ingress](./images/grafana-ingress.png)
 
@@ -92,7 +92,7 @@ spec:
 # k apply cadvidor-svc-monitor.yaml
 # Note: 实际上我们应该使用的 pod-monitor 而不是 service-monitor，这里这么做只是为了贪图方便。（心虚！）
 ```
-> 配置 JSON 文件：[grafana-docker.json](./exmaple/grafana-docker.json)
+> 配置 JSON 文件：[grafana-docker.json](./example/grafana-docker.json)
 
 ![grafana-docker](./images/grafana-docker.png)
 
@@ -169,7 +169,7 @@ spec:
 # k apply -f node-exporter-pod-monitor.yaml
 ```
 
-> 配置 JSON 文件：[grafana-node-exporter.json](./exmaple/grafana-node-exporter.json)
+> 配置 JSON 文件：[grafana-node-exporter.json](./example/grafana-node-exporter.json)
 
 ![grafana-node-exporter](./images/grafana-node-exporter.png)
 
@@ -469,7 +469,7 @@ spec:
   sum(rate(service_http_request_duration_seconds_count{job=~"$job", exported_endpoint=~"$endpoint", method=~"$method", status=~"$status"}[$interval])) by (exported_endpoint)
   ```
 
-> 配置 JSON 文件：[grafana-language-echo.json](./exmaple/grafana-language-echo.json)
+> 配置 JSON 文件：[grafana-language-echo.json](./example/grafana-language-echo.json)
 
 对服务发起「大量请求」然后看看效果吧。这里提供一个测试脚本。
 ```python
