@@ -45,7 +45,7 @@
 
 Prometheus server 是没有原生的高可用方案的，不过它有一种联邦机制（Federation）。也就是说，可以把 promethues 本身的数据上报给上层的 promethues 实例，是一个层级结构。
 
-![prometheus-federation](prometheus-federation.png)
+![prometheus-federation](./images/prometheus-federation.png)
 
 联邦机制解决了什么问题呢。比如，你可以在一个数据中心部署一个 Promethues server，然后各个业务部门部署自己单独的 promethues server，然后数据统一上报给数据中心，由数据中心负责对数据进行聚合。
 
