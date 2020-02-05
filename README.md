@@ -18,3 +18,7 @@
 * [0x07-Prometheus-实践(进阶篇)](./0x07-Prometheus-实践(进阶篇).md)
 * [0x08-Alertmanager-告警系统](./0x08-Alertmanager-告警系统.md)
 * [0x09-高可用-Prometheus](./0x09-高可用-Prometheus.md)
+
+#### License
+
+MIT [©chenjiandongx](https://github.com/chenjiandongx)

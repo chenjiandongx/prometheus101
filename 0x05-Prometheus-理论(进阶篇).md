@@ -157,13 +157,13 @@ scrape_configs 是 Promethues 最为重要的配置之一，指定了 promethues
 ```yaml
 # scrape_configs
 
-# job 是 promethues 中最基本的调度单位，一个 job 可能会拥有多个 instances，就想一个服务可能会拥有多个实例一样。
+# job 是 promethues 中最基本的调度单位，一个 job 可能会拥有多个 instances，就像一个服务可能会拥有多个实例一样。
 job_name: <job_name>
 
-# How frequently to scrape targets from this job.
+# 抓取时间间隔。
 [ scrape_interval: <duration> | default = <global_config.scrape_interval> ]
 
-# Per-scrape timeout when scraping this job.
+# 抓取超时时间。
 [ scrape_timeout: <duration> | default = <global_config.scrape_timeout> ]
 
 # 默认的 web path 是 /metrics，现在对整个社区来说也是一个约定俗成的东西，基本不会有变动。
@@ -260,7 +260,7 @@ relabel_configs:
 
 #### 5.2.2 alertingRule
 
-采集了 metrics 很大一部分目标是为了后面的告警使用，所以我们需要根据手上掌握的数据来定义告警规则。首先来看看官方给出的一个基础示例。
+采集了 metrics 可以被告警系统使用，所以我们需要根据手上掌握的数据来定义告警规则。首先来看看官方给出的一个基础示例。
 ```yaml
 groups:
 - name: example
@@ -304,7 +304,9 @@ annotations:
 
 #### 5.2.3 recordingRule
 
-Prometheus 提供一种记录规则（Recording Rule） 来支持后台计算的方式，可以实现对复杂查询的 PromQL 语句的性能优化，提高查询效率。记录规则的基本思想是，它允许我们基于其他时间序列创建自定义的 meta-time 序列。在 Prometheus Operator 中已经有了大量此类规则，比如：
+Prometheus 提供一种记录规则（Recording Rule） 来支持后台计算的方式，可以实现对复杂查询的 PromQL 语句的性能优化，提高查询效率。记录规则的基本思想是，它允许我们基于其他时间序列创建自定义的 meta-time 序列。
+
+在 Prometheus Operator 中已经有了大量此类规则，比如：
 ```yaml
 groups:
   - name: k8s.rules
@@ -317,7 +319,14 @@ groups:
       record: namespace:container_memory_usage_bytes:sum
 ```
 
-上面的这两个规则就完全可以执行上面我们的查询，它们会连续执行并以很小的时间序列将结果存储起来。`sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container_name!=""}[5m])) by (namespace)` 将以预定义的时间间隔进行评估，并存储为新的指标：`namespace:container_cpu_usage_seconds_total:sum_rate`，与内存查询相同，效率更高。
+上面的这两个规则就完全可以执行上面我们的查询，它们会连续执行并以很小的时间序列将结果存储起来。
+```
+sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container_name!=""}[5m])) by (namespace)
+```
+将以预定义的时间间隔进行评估，并存储为新的指标，新指标与内存查询相同，效率更高
+```
+namespace:container_cpu_usage_seconds_total:sum_rate
+```
 
 同样的，我们先来看官方给出的基础示例。
 ```yaml

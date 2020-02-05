@@ -16,7 +16,9 @@
 
 #### 7.1.2 grafana-ingress
 
-前面我们也部署了 Ingress-Nginx 用于域名的转发，Kubernetes 官方提供的 nginx-ingress-controller 是有上报 `/metrics` 的接口的，不过为了配合 prometheus-operator 使用，我们需要修改点内容。prometheus-operator 的 monitor 如若需要指定端口的话，必须为其 `name`，不能为端口号。至于为什么一定要这样，我也不是很清楚，因为源码中就是这么规定的...
+前面我们也部署了 Ingress-Nginx 用于域名的转发，Kubernetes 官方提供的 nginx-ingress-controller 是有上报 `/metrics` 的接口的，不过为了配合 prometheus-operator 使用，我们需要修改点内容。
+
+prometheus-operator 的 monitor 如若需要指定端口的话，必须为其 `name`，不能为端口号。至于为什么一定要这样，我也不是很清楚，因为源码中就是这么规定的...
 
 ```shell
 # 使用 vim 搜索 `ports`，找到 container port 为 10254 的端口，新增 `name: web` 配置。
@@ -175,7 +177,7 @@ spec:
 
 前面所使用的都是其他开发者编写的 exporter，那如果我们自己也想根据业务需求来编写一个 exporter，提供 `/metrics` 路由向 Prometheus 上报数据呢。
 
-目前在业务开发中，我所使用的 Golang Web 框架是 [Gin](https://github.com/gin-gonic/gin)，Gin 是一个精巧的框架，API 设计得挺优雅，性能也不错。所以我为 Gin 开发了一个 Middleware，[ginprom](https://github.com/chenjiandongx/ginprom) 并提供了相应的 Grafana 面板。总代码量也就 100 多行，下面进行源码剖析 🐶。
+目前在业务开发中，我所使用的 Golang Web 框架是 [Gin](https://github.com/gin-gonic/gin)，Gin 是一个精巧的框架，API 设计得挺优雅，性能也不错。所以我为 Gin 开发了一个 Middleware [ginprom](https://github.com/chenjiandongx/ginprom) 并提供了相应的 Grafana 面板。总代码量也就 100 多行，下面进行源码剖析 🐶。
 
 ```golang
 // https://github.com/chenjiandongx/ginprom/blob/master/middleware.go
@@ -314,7 +316,7 @@ func PromHandler(handler http.Handler) gin.HandlerFunc {
 }
 ```
 
-在 Gin Web 代码中使用也很方便，几行代码即可 🙂。为了体验真实的效果，我们可以开发一个小应用来部署在 Kubernetes 上试试。源码如下。
+在 Gin Web 代码中使用也很方便，几行代码即可 🙂。为了体验真实的效果，我们可以开发一个小应用部署在 Kubernetes 上试试。源码如下。
 ```golang
 package main
 

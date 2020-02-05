@@ -135,12 +135,15 @@ spec:
           requests:
             cpu: 200m
             memory: 25Mi
+
 # k apply -f bbox.yaml
 ```
 
 #### 8.3.2 创建 alertmanager 配置文件
 
-根据 prometheus-operator 文档要求，需要先准备一个配置文件，定义警告的接受者。然后根据配置文件创建 secrets
+根据 prometheus-operator 文档要求，需要先准备一个配置文件，定义警告的接受者，然后根据配置文件创建 secrets。
+
+这里我使用的是 slack 来接受告警信息。需要在 slack 注册一个 webhook 和相应的 channel，这部分网上有很多相关资料，就不再赘述了。
 ```yaml
 # alertmanager.yaml
 global:
@@ -170,7 +173,9 @@ $ kubectl create secret generic alertmanager-example --from-file=alertmanager.ya
 
 #### 8.3.4 部署 kube-state-metrics
 
-在上面的篇章中，我们已经部署了 cadvisor，这个是用于采集容器的实时数据的。但如果你要计算使用率的话，还需要了解该容器的限制资源为多少，这个时候就需要用到另外一个组件了。[kube-state-metrics](https://github.com/kubernetes/kube-state-metrics) 是一个由 Kubernetes 官方团队开发的采集容器和资源信息的项目。只有这两者相结合才能计算出资源的使用率。
+在上面的篇章中，我们已经部署了 cadvisor，这个是用于采集容器的实时数据的。但如果你要计算使用率的话，还需要了解该容器的限制资源为多少，这个时候就需要用到另外一个组件了。
+
+[kube-state-metrics](https://github.com/kubernetes/kube-state-metrics) 是一个由 Kubernetes 官方团队开发的采集容器和资源信息的项目，只有 cadvisor 和 kube-state-metrics 这两者相结合才能计算出资源的使用率 🤭。
 
 ```shell
 $ git clone https://github.com/kubernetes/kube-state-metrics.git
@@ -208,7 +213,7 @@ spec:
 
 #### 8.3.6 创建定义告警规则
 
-我们这里只进行两种规则的判断，CPU 和内存使用率持续 3 分钟内大于 80%。
+我们这里只进行两种规则的判断，CPU 或内存使用率持续 3 分钟内大于 80%。
 ```yaml
 # bbox-rules.yaml
 apiVersion: monitoring.coreos.com/v1
@@ -252,7 +257,7 @@ $ k exec -it bbox-7db4d47f4b-425ng  /bin/sh
 $ cat /dev/zero>/dev/null
 ```
 
-使用 `kubectl top` 命令查看操作是否实际生效。可以看到 CPU 使用率杭来了。
+使用 `kubectl top` 命令查看操作是否实际生效。可以看到 CPU 使用上来了。
 
 ![bbox top](./images/bbox-top.png)
 
