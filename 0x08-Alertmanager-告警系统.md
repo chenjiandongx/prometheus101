@@ -191,7 +191,7 @@ $ kubectl apply -f examples/standard
 kube-system            kube-state-metrics-676545cdcc-wzlld          1/1     Running   8          27d
 ```
 
-#### 8.3.5 通知 Promethues 抓取 kube-state-metrics 数据
+#### 8.3.5 通知 Prometheus 抓取 kube-state-metrics 数据
 ```yaml
 # kube-state-metrics-svc-monitor.yaml
 apiVersion: monitoring.coreos.com/v1
@@ -287,7 +287,7 @@ $ cat /dev/zero>/dev/null
 
 ![bbox top](./images/bbox-top.png)
 
-等待一分钟，Promethues server CPU 警告规则已经处于 pending 状态。
+等待一分钟，Prometheus server CPU 警告规则已经处于 pending 状态。
 
 ![bbox pending](./images/bbox-pending.png)
 

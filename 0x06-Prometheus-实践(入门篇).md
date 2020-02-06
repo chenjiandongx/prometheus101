@@ -212,7 +212,7 @@ prometheus-operator-99dccdc56-89rlt      1/1     Running   25         78d
 
     kubeadm 在安装 Kubernetes 集群的时候，NodePort 端口默认只开放 30000+，这也是 ingress-controller-svc 的 HTTP/HTTPS 端口都被映射到 30000+ 的原因。所以我们虽然配置了域名，但是访问的时候还是需要把端口带上。比如 http://prometheus.chenjiandongx.com:30834 我还是喜欢直接访问 http://prometheus.chenjiandongx.com （傲娇脸！）。所以我们可以在 master 节点上再新增一个 nginx 来做 4 层转发，这样我们就可以达到我们想要的效果啦！
 
-验证我们刚才监控 prometheus 自己的操作是否成功，诺！`prometheus_*` metircs 就是 prometheus 自己上报的指标啦！
+验证我们刚才监控 prometheus 自己的操作是否成功，诺！`prometheus_*` metircs 就是 prometheus 自己上报的指标。
 
 ![prometheus 监控面板](./images/prometheus-dashboard-1.jpg)
 

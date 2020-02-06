@@ -236,7 +236,7 @@ var (
 	)
 )
 
-// 初始化操作，需要将上面声明的指标注册到 promethues 程序中
+// 初始化操作，需要将上面声明的指标注册到 Prometheus 程序中
 func init() {
 	prometheus.MustRegister(uptime, reqCount, reqDuration, reqSizeBytes, respSizeBytes)
 	go recordUptime()
@@ -299,7 +299,7 @@ func PromMiddleware(promOpts *PromOpts) gin.HandlerFunc {
 			return
 		}
 
-		// 这里将数据记录在内存中，等 promethues server 来抓取
+		// 这里将数据记录在内存中，等 Prometheus server 来抓取
 		// 每个数据都会携带 status, endpoint, method
 		reqCount.WithLabelValues(lvs...).Inc()
 		reqDuration.WithLabelValues(lvs...).Observe(time.Since(start).Seconds())
@@ -336,33 +336,23 @@ func main() {
 
 	// 并无引战的想法，友军来着，别激动。
 	r.GET("/python", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"echo": "python is the best language in the world!",
-		})
+		c.JSON(200, gin.H{"echo": "python is the best language in the world!"})
 	})
 
 	r.GET("/php", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"echo": "php is the best language in the world!",
-		})
+		c.JSON(200, gin.H{"echo": "php is the best language in the world!"})
 	})
 
 	r.GET("/java", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"echo": "java is the best language in the world!",
-		})
+		c.JSON(200, gin.H{"echo": "java is the best language in the world!"})
 	})
 
 	r.GET("/golang", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"echo": "golang is the best language in the world!",
-		})
+		c.JSON(200, gin.H{"echo": "golang is the best language in the world!"})
 	})
 
 	r.GET("/ruby", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"echo": "ruby is the best language in the world!",
-		})
+		c.JSON(200, gin.H{"echo": "ruby is the best language in the world!"})
 	})
 
 	if err := r.Run("0.0.0.0:8080"); err != nil {
@@ -499,4 +489,5 @@ if __name__ == "__main__":
 
 # python3 curl.py
 ```
+
 ![grafana-language-echo](./images/grafana-language-echo.png)

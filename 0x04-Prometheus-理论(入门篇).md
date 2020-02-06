@@ -1,5 +1,7 @@
 ## 4. Prometheus 理论（入门篇）
 
+<p align="center"><img src="./images/prometheus-logo.png" width="400px"></p>
+
 ### 4.1 Prometheus 是什么？
 
 [Prometheus](https://prometheus.io) 是由 SoundCloud 公司开源和维护的监控和告警的解决方案。项目始于 2012 年，目前已有多家公司将 Prometheus 投入于生产环境中。Prometheus 是继 Kubernetes 之后第二个从 [CNCF](https://www.cncf.io/) 毕业的项目，在这个 CloudNative 盛行的时代，Prometheus 已经成为最热门的监控方案。Prometheus 有着良好的社区氛围，在社区的驱动下，项目正在如火如荼的开发迭代中。
@@ -42,7 +44,7 @@ Prometheus 有四种基本的数据类型，Counter、Gauge、Histogram、Summar
 
 #### 4.3.1 Counter（计数器）
 
-Counter 单调递增，违反单调性时重置为 0。可以用于统计某些事件出现的次数，或者服务的 uptime。
+Counter 单调递增，违反单调性时重置为 0。可以用于统计某些事件出现的次数，或者服务的 uptime。指标名称一般以 `_total` 作为后缀。
 
 #### 4.3.2 Gauge（仪表盘）
 
@@ -55,3 +57,5 @@ Histogram 由 `<basename>_bucket{le="<upper inclusive bound>"}`，`<basename>_bu
 #### 4.3.4 Summary（摘要）
 
 Summary 和 Histogram 类似，由 `<basename>{quantile="<φ>"}`，`<basename>_sum`，`<basename>_count` 组成，主要用于表示一段时间内数据采样结果（通常是请求持续时间或响应大小），它直接存储了 quantile 数据，而不是根据统计区间计算出来的（主要计算消耗在客户端）。例如 Prometheus server 中 prometheus_target_interval_length_seconds。
+
+关于 Histogram 和 Summary 的详细对比，可参考文档：[practices/histograms](https://prometheus.io/docs/practices/histograms/) 。
