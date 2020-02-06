@@ -16,7 +16,7 @@
 
 #### 7.1.2 grafana-ingress
 
-前面我们也部署了 Ingress-Nginx 用于域名的转发，Kubernetes 官方提供的 nginx-ingress-controller 是有上报 `/metrics` 的接口的，不过为了配合 prometheus-operator 使用，我们需要修改点内容。
+前面我们也部署了 Ingress-Nginx 用于域名转发，Kubernetes 官方提供的 nginx-ingress-controller 是有上报 `/metrics` 的接口的，不过为了配合 prometheus-operator 使用，我们需要修改点内容。
 
 prometheus-operator 的 monitor 如若需要指定端口的话，必须为其 `name`，不能为端口号。至于为什么一定要这样，我也不是很清楚，因为源码中就是这么规定的...
 
