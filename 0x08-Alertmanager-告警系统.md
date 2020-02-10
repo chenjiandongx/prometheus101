@@ -6,6 +6,10 @@ Prometheus 的分工还是比较明确的，Prometheus server 负责产生警告
 
 Alertmanager 接受到来自 Prometheus 的告警后，需要删除重复、分组，并将它们通过路由发送到正确的接收器，比如电子邮件、Slack、钉钉等。Alertmanager 还支持沉默和警报抑制的机制。
 
+***Alertmanager 架构***
+
+![Alertmanager 架构](./images/alertmanager-arch.svg)
+
 #### 8.1.1 分组
 
 分组是指当出现问题时，Alertmanager 会收到一个单一的通知，而当系统宕机时，很有可能成百上千的警报会同时生成，这个时候就需要将这些警告分组了。
